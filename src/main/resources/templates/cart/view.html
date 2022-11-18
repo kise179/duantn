@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/index :: dynamic(~{::main})}">
+<body>
+	<main>
+		<div th:fragment="shopping_cart">
+			<!-- <table class="table table-hover">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Amount</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in cart.items">
+						<td>{{item.id}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.price | number :2}}</td>
+						<td><input ng-change="cart.saveToLocalStorage()" ng-model="item.qty" type="number" min="1"></td>
+						<td>${{item.qty*item.price | number:2}}</td>
+						<td>
+							<button type="button" ng-click="cart.remove(item.id)" class="btn btn-outline-primary">Delete</button>
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			<h4>Tá»•ng Tiá»�n: {{cart.amount | number:2}}</h4>
+			<div >
+				<button type="button" ng-click="cart.clear()" class="btn btn-outline-danger">Clear</button>
+				<a th:href="@{/order/checkout}" class="btn btn-outline-primary" >Check Out </a>
+			</div> -->
+			<div class="cart-main-area pt-70px pb-100px">
+				<div class="container">
+					<h3 class="cart-page-title">Your cart items</h3>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+							<form action="#">
+								<div class="table-content table-responsive cart-table-content">
+									<table>
+										<thead>
+											<tr>
+												<th>Image</th>
+												<th>Product Name</th>
+												<th>Until Price</th>
+												<th>Qty</th>
+												<th>Amount</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="item in cart.items">
+												<td class="product-thumbnail"><a href="#"><img
+														class="img-responsive ml-15px"
+														th:src="@{|/assets/images/{{item.image}}|}" alt="" /></a></td>
+												<td class="product-name"><a href="#">{{item.name}}</a></td>
+												<td class="product-price-cart"><span class="amount">{{(item.price)
+														-(item.price*item.discount.number) | number :2}}</span></td>
+												<td class="product-quantity">
+													<div>
+														<input ng-change="cart.saveToLocalStorage()"
+															ng-model="item.qty" type="number" min="1" />
+													</div>
+												</td>
+												<td class="product-subtotal">${{(item.qty)*((item.price)
+													-(item.price*item.discount.number)) | number:2}}</td>
+												<td class="product-remove"><a
+													ng-click="cart.remove(item.id)"><i class="fa fa-times"></i></a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="cart-shiping-update-wrapper">
+											<div class="cart-shiping-update">
+												<a href="/product/listall">Continue Shopping</a>
+											</div>
+											<div class="cart-clear">
+												<button>Update Shopping Cart</button>
+												<a ng-click="cart.clear()" class="btn btn-outline-danger"
+													href="#">Clear Shopping Cart</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+							<div th:if="${message}">
+							<label style="font-family: 'Patrick Hand', cursive;">[[${message}]]</label>
+							</div>
+							<div class="row">
+
+								<div class="col-lg-4 col-md-6 mb-lm-30px">
+									<div class="discount-code-wrapper">
+										<div class="title-wrap">
+											<h4 class="cart-bottom-title section-bg-gray">Use Coupon
+												Code</h4>
+										</div>
+										<div class="discount-code">
+											<p>Enter your coupon code if you have one.</p>
+											<form action="/product/voucher" method="get">
+												<select class="form-select mb-2"
+													aria-label="Default select example" name="product_id">
+													<option ng-repeat="item in cart.items" value="{{item.id}}">{{item.name}}</option>
+													
+												</select>
+												 <input type="text" required="" name="voucher_code" />
+												<button class="cart-btn-2" type="submit">Apply
+													Coupon</button>
+											</form>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-8 col-md-12 mt-md-30px">
+									<div class="grand-totall">
+										<div class="title-wrap">
+											<h4 class="cart-bottom-title section-bg-gary-cart">Cart
+												Total</h4>
+										</div>
+										<h5>
+											Total products <span>{{cart.amount | number:2}}</span>
+										</h5>
+										<div class="total-shipping">
+											<h5>Total shipping</h5>
+											<ul>
+												<li><input type="checkbox" /> Standard <span>$20.00</span></li>
+												<li><input type="checkbox" /> Express <span>$30.00</span></li>
+												<li>Giam Gia: [[${session.giamgia}]]</li>
+											</ul>
+											<input type="hidden" name="giamgia" th:value="${session.giamgia}">
+										</div>
+										<h4 class="grand-totall-title">
+											Grand Total <span>{{cart.amount +30000 - [[${session.giamgia}]] | number:2}} </span>
+										</h4>
+										<a th:href="@{/order/checkout}">Proceed to Checkout</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>
